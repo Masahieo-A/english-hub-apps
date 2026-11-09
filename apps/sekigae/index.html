@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>席替えアプリ（デモ）</title>
+  <link rel="stylesheet" href="../../assets/css/demo.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 席替えアプリのデモ（2026-11-10）。本物は ~/Projects/sekigae（1枚のHTML、ブラウザ内だけで動く）。
+       違い：名簿は架空のサンプルのみ（ファイルは読み込まない）／CSP のため script と onclick を別ファイル化。 -->
+  <div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+  <header class="app-top no-print"><a href="../../index.html">← English Hub Demo</a></header>
+  <div class="container">
+    <div class="demo-hint no-print"><b>デモの見どころ：</b>タイトルの「<b>席</b>」の字を押すと、条件設定（前方・離したい組・空席・配慮が必要な生徒の座席指定）が開きます。本物では生徒に見せない<b>隠しボタン</b>です。名簿はサンプル（架空の40名）を使います。</div>
+    <h1><span id="secretTrigger" title="設定を開く">席</span>替えアプリ (6×7)</h1>
+
+    <!-- 名簿の読み込み（毎回Excelを取り込む） -->
+    <div id="rosterArea" class="no-print">
+      <div id="dropzone" class="dropzone">
+        <div><strong>名簿のExcelをここにドロップ</strong> またはクリックして選択</div>
+        <div class="note">A列＝出席番号／B列＝氏名／C列＝性別（男・女）。1行目が見出しでもそのまま読み込めます。.xlsx / .xls / .csv 対応</div>
+      </div>
+      <div id="sampleRow" class="sample-row"><button type="button" class="btn btn-indigo" id="sampleButton">サンプル名簿を読み込む（架空の40名）</button></div>
+      <div id="rosterInfo" class="roster-info hidden">
+        <span id="rosterText"></span>
+        <button class="btn btn-gray" id="reloadButton" type="button">別のファイルを読み込む</button>
+      </div>
+      <div id="rosterError" class="error-box hidden"></div>
+    </div>
+
+    <!-- 条件設定（「席」の字をクリックで開閉） -->
+    <div id="settingsArea" class="hidden section">
+      <h2>1. 条件設定</h2>
+      <div class="cols2">
+        <div>
+          <label class="title">前方</label>
+          <input type="text" id="frontRowInput" placeholder="例: 1, 5, 12">
+          <p class="note">カンマ区切りで入力（前2列のどこかに配置）</p>
+        </div>
+        <div>
+          <label class="title">別</label>
+          <textarea id="badRelationsInput" placeholder="例: 1,2&#13;&#10;5,8,9"></textarea>
+          <p class="note">1行に1グループ。改行で複数指定。</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <label class="title">空席にするマスを選択 (42席中)</label>
+        <p class="note">クリックして「×」になった場所には誰も座りません。黒板は上側です。</p>
+        <div class="blackboard">黒板 / 教卓</div>
+        <div id="seatSelector" class="seat-grid"></div>
+      </div>
+
+      <div class="section">
+        <label class="title">座席の指定（配慮が必要な生徒）</label>
+        <p class="note">
+          ① 生徒を選ぶ → ② その生徒が座ってよい席をクリックして ✓ を付ける（複数可）。<br>
+          席替えでは、✓ の付いた席の中からランダムに配置されます。結果の表示には指定の印は一切出ません。<br>
+          行・列の「▶」「▼」でまとめて切り替えられます。マス内の小さい数字は、その席を指定している他の生徒の番号です。
+        </p>
+        <div id="assignNoRoster" class="note">※ 先に名簿のExcelを読み込んでください。</div>
+        <div id="studentList" class="student-list"></div>
+        <div class="assign-head">
+          <div>指定中の生徒：<span id="assignTarget" class="assign-target">（未選択）</span></div>
+          <div>
+            <button class="btn btn-gray" id="clearCurrentBtn" type="button">この生徒の指定を解除</button>
+            <button class="btn btn-gray" id="clearAllBtn" type="button">全員の指定を解除</button>
+          </div>
+        </div>
+        <div class="blackboard" >黒板 / 教卓</div>
+        <div id="assignGrid" class="assign-grid inactive"></div>
+        <div id="ruleSummary" class="rule-summary"></div>
+      </div>
+    </div>
+
+    <div id="runArea" class="center" style="margin: 28px 0;">
+      <button id="runButton" class="btn btn-main" type="button" disabled>席替えを実行する</button>
+      <div id="runHint" class="note">名簿のExcelを読み込むと実行できます</div>
+    </div>
+
+    <div id="loader" class="hidden">
+      <div class="loader"></div>
+      <p class="center" style="color:#4b5563">最適なパターンを計算中...<br>(条件が厳しい場合、時間がかかることがあります)</p>
+    </div>
+
+    <div id="resultsArea" class="hidden">
+      <div class="results-head no-print">
+        <h2>生成結果 (3パターン)</h2>
+        <div>
+          <button id="printBtn" type="button" class="btn btn-gray">印刷</button>
+          <button id="toggleButton" type="button" class="btn btn-green">
+            <span id="btnText">出席番号に切り替え</span>
+          </button>
+        </div>
+      </div>
+      <div id="pattern1" class="pattern"></div>
+      <div id="pattern2" class="pattern"></div>
+      <div id="pattern3" class="pattern"></div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
