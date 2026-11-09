@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Question Time（デモ）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/demo.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+
+  <header class="app-header no-print">
+    <a href="../../index.html" class="site-logo"><span class="logo-mark" aria-hidden="true">🌿</span>← English Hub Demo</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-app">Question Time</span>
+  </header>
+
+  <main class="wrap no-print">
+    <h1 class="page-title">Question Time</h1>
+
+    <!-- モード切替（画面は移らず、手順2の中身と手順3〜5の対象が切り替わる） -->
+    <div class="mode-bar" id="mode-bar" role="tablist" aria-label="作成モード">
+      <button type="button" role="tab" data-mode="batch" class="on">一斉作成</button>
+      <button type="button" role="tab" data-mode="absent">未提出者用</button>
+      <button type="button" role="tab" data-mode="manual">個別作成</button>
+    </div>
+    <p class="muted small mode-note" id="mode-note"></p>
+
+    <!-- STEP 0 -->
+    <details class="card step" id="step-setup">
+      <summary><span class="step-no">0</span>はじめに（最初の1回だけ）：フォームとGemの準備</summary>
+      <div class="step-body">
+        <ol class="howto">
+          <li><strong>Googleフォーム</strong>を作り、次の4項目を順に設定します（すべて必須）。
+            <ul>
+              <li>「クラス」…プルダウン（例: 2A, 2B …）</li>
+              <li>「番号」…記述式（回答の検証: 数値・1〜45）</li>
+              <li>「氏名」…記述式</li>
+              <li>「essay」…段落。説明文に「紙に書いたessayを、スペルや文法を直さずにそのまま入力してください。」</li>
+            </ul>
+            回答タブ ›「スプレッドシートにリンク」で回答シートを作ります。
+          </li>
+          <li>そのスプレッドシートに、空のシート「<strong>質問</strong>」を追加します（Gemの出力を貼る場所）。</li>
+          <li><strong>Gem</strong>（Gemini ›「Gem マネージャー」›「新しい Gem」）を作り、下の「システムプロンプト」を指示欄に貼り付けて保存します。</li>
+        </ol>
+        <div class="row">
+          <button type="button" class="btn btn-primary" id="copy-prompt">システムプロンプトをコピー</button>
+          <button type="button" class="btn btn-secondary" id="toggle-prompt">中身を表示</button>
+        </div>
+        <pre class="prompt-view" id="prompt-view" hidden></pre>
+      </div>
+    </details>
+
+    <!-- STEP 1 -->
+    <section class="card step">
+      <h2><span class="step-no">1</span>課題の情報</h2>
+      <div class="grid-form">
+        <label class="field"><span>課題名</span><input class="input" id="s-title" value="2学期中間 Question Time" /></label>
+        <label class="field"><span>実施日</span><input class="input" id="s-date" type="date" value="2026-11-12" /></label>
+        <label class="field wide"><span>essayトピック（英語・用紙に印字）</span><input class="input" id="s-topic" lang="en" value="Draft a proposal to boost youth tourism in our town." /></label>
+        <label class="field"><span>学年目標CEFR（Gemに渡す）</span>
+          <select class="input" id="s-cefr"><option>A2</option><option selected>B1</option><option>B2</option></select></label>
+        <label class="field"><span>解答時間（分）</span><input class="input" id="s-minutes" type="number" min="5" max="60" value="15" /></label>
+      </div>
+      <p class="muted small">この欄の内容は、下の用紙のタイトル・トピック・日付にそのまま反映されます。</p>
+    </section>
+
+    <!-- STEP 2（個別作成） -->
+    <section class="card step" data-only="manual" hidden>
+      <h2><span class="step-no">2</span>essayを手で入力する（フォームを出し忘れた生徒）</h2>
+      <p>紙のessayを、スペルや文法を直さずにそのまま打ち込みます。「次を追加」で何人でも入力できます。</p>
+      <div id="manual-list" class="manual-list"></div>
+      <div class="row">
+        <button type="button" class="btn btn-secondary" id="manual-add">＋ 次を追加</button>
+        <button type="button" class="btn btn-primary" id="manual-sample">サンプルを入力する（架空の生徒1人）</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="manual-clear">入力をすべて消す</button>
+      </div>
+      <p class="muted small">本物では「コピー」で課題情報と essay（ID と本文だけ・氏名なし）を1つの依頼文にして Gem に渡します。このデモでは、サンプル入力に質問が付いた状態で用紙を作れます。</p>
+      <div id="manual-summary" class="summary"></div>
+    </section>
+
+    <!-- STEP 2（未提出者用） -->
+    <section class="card step" data-only="absent" hidden>
+      <h2><span class="step-no">2</span>sample essay と質問を作る（未提出者用）</h2>
+      <p>手順1のトピックで sample essay を作り、その essay で Question Time の用紙を作ります。用紙の氏名欄は空欄になり、同じ用紙を必要な枚数だけ印刷できます。</p>
+      <div class="grid-form">
+        <label class="field"><span>sample essay の語数の目安</span><input class="input narrow" type="number" min="50" max="300" value="120" /></label>
+        <label class="field wide"><span>sample essay への希望（任意・日本語可）</span><input class="input" placeholder="例: 地元の地図について、主張は「若者が歩きやすくなる」" /></label>
+      </div>
+      <ol class="howto">
+        <li><button type="button" class="btn btn-primary btn-sm" id="absent-copy">依頼文をコピー（未提出者用）</button> → Gem に貼り付けて送信します。</li>
+        <li>sample essay が表示されます。内容を確かめ、よければ「OK」と送ります。</li>
+        <li>出てきた表（TSV）をコピーして、下に貼り付けます。</li>
+      </ol>
+      <div class="row">
+        <button type="button" class="btn btn-primary" id="absent-apply">サンプルを取り込む（Gem の出力の代わり）</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="absent-clear">sample essay を消す</button>
+      </div>
+      <div id="absent-summary" class="summary"></div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="card step" data-only="batch">
+      <h2><span class="step-no">2</span>スプレッドシートを読み込む</h2>
+      <p>Googleスプレッドシートを .xlsx で保存したファイルを読み込みます。フォームの回答シートと「質問」シートの両方が入っていれば、IDで自動的に結び付けます。</p>
+      <div class="drop" id="drop"><span>このデモではファイルを選べません。下のボタンで架空のデータを読み込みます</span></div>
+      <div class="row"><button type="button" class="btn btn-primary btn-sm" id="load-sample">サンプルデータを読み込む（架空の生徒4人）</button></div>
+      <div id="load-summary" class="summary"></div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="card step" data-hide="absent">
+      <h2><span class="step-no">3</span>Gemに渡す（質問がまだない生徒）</h2>
+      <p>最初に「課題開始メッセージ」を送り、続けて5人分ずつ貼り付けます。渡すのは <strong>ID と本文だけ</strong>です（氏名は含みません）。</p>
+      <div class="row">
+        <button type="button" class="btn btn-secondary" id="copy-kickoff">課題開始メッセージをコピー</button>
+        <label class="field inline"><span>1回の人数</span><input class="input narrow" id="batch-size" type="number" min="1" max="10" value="5" /></label>
+        <label class="check"><input type="checkbox" id="batch-missing-only" checked />質問がまだない生徒だけ</label>
+      </div>
+      <div id="batches" class="batches"></div>
+      <p class="muted small">Gemが出した表を「質問」シートに貼り付け、もう一度 .xlsx を読み込み直します（デモでは、サンプルに質問が最初から入っています）。</p>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="card step">
+      <h2><span class="step-no">4</span>点検</h2>
+      <p>AIの誤りでいちばん多いのは「essayにない文の引用」です。引用が本文に一字一句あるか、質問の語数などを機械的に確かめます。</p>
+      <div class="row">
+        <div class="filters" id="status-filter">
+          <button type="button" data-f="all" class="on">全員</button>
+          <button type="button" data-f="ng">要確認</button>
+          <button type="button" data-f="missing">質問なし</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="table" id="check-table"></table></div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="card step">
+      <h2><span class="step-no">5</span>印刷</h2>
+      <div class="row">
+        <div class="filters" id="kind">
+          <button type="button" data-k="student" class="on">解答用紙（生徒）</button>
+          <button type="button" data-k="teacher">採点シート（教員）</button>
+          <button type="button" data-k="feedback">返却シート（生徒）</button>
+        </div>
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="use-backup" />質問がない生徒・要確認の生徒は予備問題で印刷する</label>
+        <label class="field inline" data-only="absent" hidden><span>印刷枚数（解答用紙・返却シート）</span><input class="input narrow" id="absent-copies" type="number" min="1" max="60" value="5" /></label>
+      </div>
+      <p class="muted small" id="print-count"></p>
+      <div class="row">
+        <button type="button" class="btn btn-primary btn-lg" id="print">印刷する（A4縦・余白なし）</button>
+        <button type="button" class="btn btn-secondary btn-lg" id="export-xlsx">再編集用データを保存（.xlsx）</button>
+      </div>
+      <p class="muted small">印刷画面では「用紙サイズ: A4」「余白: なし」「倍率: 100」「背景のグラフィック: オン」にしてください。PDFに保存しても同じです。</p>
+    </section>
+
+    <section class="preview-head">
+      <div class="row view-bar">
+        <h2>プレビュー</h2>
+        <button type="button" class="edit-switch" id="edit-switch" role="switch" aria-checked="false">
+          <span class="knob" aria-hidden="true"></span><span class="lbl">編集 OFF</span>
+        </button>
+      </div>
+      <p class="muted small" id="view-note"></p>
+    </section>
+  </main>
+
+  <div class="workspace" id="workspace">
+    <div class="preview-nav no-print" id="preview-nav">
+      <button type="button" class="btn btn-secondary" id="pv-prev" aria-label="前の用紙">← 前へ</button>
+      <span class="pv-label" id="pv-label" aria-live="polite"></span>
+      <button type="button" class="btn btn-primary" id="pv-next" aria-label="次の用紙">次へ →</button>
+    </div>
+    <div class="preview-col" id="preview-col">
+      <div class="sheet-empty no-print" id="sheet-empty" hidden></div>
+      <div id="sheets" class="sheets"></div>
+    </div>
+    <!-- 編集パネル（右側。本物の「編集」と同じ構成。保存はしない） -->
+    <aside class="card editor no-print" id="editor" hidden>
+      <div class="row editor-nav">
+        <button type="button" class="btn btn-secondary btn-sm" id="ed-prev" aria-label="前の生徒">← 前</button>
+        <select class="input" id="ed-student" aria-label="編集する生徒"></select>
+        <button type="button" class="btn btn-secondary btn-sm" id="ed-next" aria-label="次の生徒">次 →</button>
+      </div>
+      <div class="ed-reset-row">
+        <button type="button" class="btn btn-secondary btn-sm" id="ed-reset">元に戻す（サンプルの状態に戻す）</button>
+        <span class="muted small">デモのため保存されません。再読み込みで元に戻ります。</span>
+      </div>
+      <div id="ed-check" class="ed-check"></div>
+      <div class="ed-essay">
+        <div class="ed-label">essay（下線は各問の引用） <span class="badge warn" id="ed-essay-badge" hidden>本文を修正済み</span></div>
+        <div id="ed-essay" lang="en"></div>
+        <details class="ed-essay-edit">
+          <summary>essay の本文を編集する（余分な改行・「よろしくお願いします」などを消す）</summary>
+          <textarea class="input" id="ed-essay-input" rows="7" lang="en" aria-label="essay の本文"></textarea>
+        </details>
+      </div>
+      <div id="ed-form"></div>
+    </aside>
+  </div>
+  <div id="toast" class="toast no-print" hidden></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

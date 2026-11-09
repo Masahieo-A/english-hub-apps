@@ -1,0 +1,41 @@
+/* ============================================================
+   English Hub Demo — DEMO 表示（全ページ共通）
+   <body> 直下に <div class="demo-ribbon">…</div> を置く
+   ============================================================ */
+.demo-ribbon {
+  position: relative;
+  z-index: 200;
+  padding: 6px 16px;
+  background: #1a1714;
+  color: #f8f7f4;
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-align: center;
+  line-height: 1.6;
+}
+.demo-ribbon b {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 0 6px;
+  border: 1px solid #f8f7f4;
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+/* 教材ページの注記（オリジナル英文である旨など） */
+.hub-note {
+  margin-top: 28px;
+  font-size: 0.8rem;
+  color: #6b645c;
+}
+
+/* トップ下部：「自分で作るには」への入口 */
+.hub-diy { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 36px 0 8px; }
+.hub-diy__link { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border: 1.5px solid #2d6a4f; border-radius: 14px; background: #fff; color: #1a1714; text-decoration: none; transition: background .15s; }
+.hub-diy__link:hover { background: #edf6f0; }
+.hub-diy__link b { font-size: 1.02rem; color: #1f4a37; }
+.hub-diy__link b::after { content: " →"; }
+.hub-diy__link span { font-size: .85rem; color: #6b645c; }

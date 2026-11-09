@@ -1,0 +1,66 @@
+/* 保護者向けフォームの見本（デモ） */
+* { box-sizing: border-box; }
+body { margin: 0; background: #edf6f0; color: #1a1714; font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.7; }
+a { color: #2d6a4f; }
+.page { max-width: 1120px; margin: 0 auto; padding: 16px 16px 48px; }
+.back { margin: 0 0 12px; font-size: 14px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+
+/* フォーム本体：質問ごとの白いカード */
+.form { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.q { background: #fff; border: 1px solid #dfe7e1; border-radius: 8px; padding: 22px 24px; }
+.head-card { border-top: 10px solid #2d6a4f; }
+.head-card h1 { margin: 0 0 10px; font-size: 26px; font-weight: 500; }
+.head-card p { margin: 0 0 8px; font-size: 14px; }
+.meta { color: #4d4741; }
+.req-note { color: #b3261e; font-size: 13px !important; margin-top: 12px !important; }
+.q-title { display: block; margin: 0 0 14px; font-size: 16px; font-weight: 500; }
+.req { color: #b3261e; }
+.q-help { margin: -8px 0 12px; font-size: 13px; color: #6b645c; }
+.line { width: 60%; min-width: 220px; border: 0; border-bottom: 1px solid #c9c3b9; padding: 6px 2px; font: inherit; font-size: 14px; background: transparent; resize: vertical; }
+.line:focus { outline: none; border-bottom: 2px solid #2d6a4f; }
+textarea.line { width: 100%; }
+
+/* 日付×時刻のグリッド */
+.grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.grid { border-collapse: separate; border-spacing: 0; font-size: 12px; }
+.grid th { font-weight: 500; color: #4d4741; padding: 6px 4px; white-space: nowrap; text-align: center; }
+.grid thead th { position: sticky; top: 0; background: #fff; }
+.grid tbody th { text-align: left; padding-right: 10px; position: sticky; left: 0; background: #fff; }
+.grid tbody tr:nth-child(odd) td, .grid tbody tr:nth-child(odd) th { background: #f6f8f6; }
+.grid td { padding: 4px; text-align: center; }
+.cell { display: inline-block; cursor: pointer; }
+.cell input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.cell span { display: block; width: 26px; height: 26px; border: 2px solid #8c857c; border-radius: 4px; background: #fff; transition: background .1s, border-color .1s; }
+.cell input:checked + span { background: #2d6a4f; border-color: #2d6a4f; }
+.cell input:checked + span::after { content: "✓"; display: block; color: #fff; font-size: 16px; line-height: 22px; font-weight: 700; }
+.cell input:focus-visible + span { outline: 3px solid #52b788; outline-offset: 2px; }
+.picked { margin: 10px 0 0; font-size: 13px; color: #2d6a4f; font-weight: 500; }
+
+/* 送信 */
+.actions { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+.submit { border: 0; border-radius: 4px; background: #2d6a4f; color: #fff; font: inherit; font-weight: 500; padding: 9px 26px; cursor: pointer; }
+.clear { border: 0; background: none; color: #2d6a4f; font: inherit; font-size: 14px; cursor: pointer; }
+.demo-msg { margin: 0; padding: 12px 16px; border-radius: 8px; background: #fff7e0; border: 1px solid #ecd28a; color: #6b4e00; font-size: 14px; }
+
+/* 作り方の説明 */
+.howto { position: sticky; top: 16px; background: #fff; border: 1px solid #dfe7e1; border-radius: 8px; padding: 20px 20px 16px; font-size: 13px; }
+.howto h2 { margin: 0 0 4px; font-size: 16px; }
+.howto .lead { margin: 0 0 10px; color: #6b645c; }
+.howto ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+.howto ul { margin: 4px 0; padding-left: 18px; }
+.howto em { font-style: normal; font-weight: 700; color: #2d6a4f; }
+.tip { margin: 14px 0 0; padding: 10px 12px; background: #edf6f0; border-radius: 6px; color: #1f4a37; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .howto { position: static; }
+  .line { width: 100%; }
+  .q { padding: 18px 16px; }
+  .head-card h1 { font-size: 21px; }
+}
+
+/* 表が横に広くてもページ幅を押し広げない（表の中だけ横スクロール） */
+.q { min-width: 0; max-width: 100%; }
+.grid-scroll { max-width: 100%; width: 100%; }
+.page { overflow-x: hidden; }

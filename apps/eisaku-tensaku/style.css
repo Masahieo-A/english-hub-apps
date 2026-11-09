@@ -1,0 +1,116 @@
+/* 英作文 文法添削 モック：本物のTailwind配色を手書きCSSで再現 */
+:root{--g:#2d6a4f;--g2:#52b788;--gl:#d8f3dc;--bd:#e2ddd8;--bg:#f8f7f4;--tx:#1a1714;--mu:#6b645c;--rd:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+.site-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;background:#fff;border-bottom:1px solid var(--bd)}
+.logo-mark{display:flex;width:28px;height:28px;align-items:center;justify-content:center;border-radius:6px;background:var(--g);color:#fff;font-size:14px;flex-shrink:0}
+.logo-text{font-weight:700;font-size:15px}
+.sep{color:var(--bd)}
+.page-name{font-size:14px;font-weight:600;white-space:nowrap}
+.back-link{margin-left:auto;font-size:12px;color:var(--mu);text-decoration:none;white-space:nowrap}
+.back-link:hover{color:var(--g)}
+@media(max-width:520px){.logo-text,.sep{display:none}.page-name{font-size:13px}}
+.stepbar{background:#fff;border-bottom:1px solid var(--bd);padding:12px 20px}
+.stepbar-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.step{display:flex;align-items:center;gap:8px}
+.step-line{width:48px;height:1px;background:var(--bd)}
+.dot{display:flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%;font-size:12px;font-weight:700}
+.dot-active{background:var(--g);color:#fff}.dot-idle{background:var(--bd);color:var(--mu)}.dot-done{background:var(--gl);color:var(--g)}
+.step-label{font-size:14px;font-weight:600;color:var(--mu)}.step-label.active{color:var(--g)}
+.wrap{max-width:820px;margin:0 auto;padding:24px 16px 110px}
+.wrap>*+*{margin-top:16px}
+.about{border:1px solid var(--gl);background:rgba(216,243,220,.4);border-radius:10px;padding:12px 16px;font-size:14px;line-height:1.7}
+.about b{color:var(--g)}
+.card{display:block;overflow:hidden;border:1px solid var(--bd);border-radius:10px;background:#fff}
+.card-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--bd)}
+.card-head.hl{background:rgba(216,243,220,.5)}
+.card-head.clickable{cursor:pointer;list-style:none}
+.card-head.clickable::-webkit-details-marker{display:none}
+.card-head.clickable:hover{background:var(--bg)}
+.ico{display:flex;width:32px;height:32px;flex-shrink:0;align-items:center;justify-content:center;border-radius:8px;background:var(--gl);font-size:16px}
+.t{margin:0;font-size:14px;font-weight:700}
+.s{margin:0;font-size:12px;color:var(--mu)}
+.grow{flex:1}
+.card-body{padding:16px}
+.card-body>*+*{margin-top:12px}
+.field{width:100%;border:1px solid var(--bd);border-radius:8px;background:var(--bg);padding:12px;font:inherit;font-size:14px;line-height:1.7;color:var(--tx);outline:none;resize:vertical}
+.field:focus{border-color:var(--g2)}
+.field.narrow{width:256px;max-width:100%;padding:8px 12px}
+.field.mono{background:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;line-height:1.9}
+.wc-line{margin:4px 0 0;font-size:14px;color:var(--mu)}.wc-line b{color:var(--tx)}
+.err{margin:4px 0 0;font-size:14px;color:var(--rd)}
+.demo-note{font-size:12px;color:var(--mu);margin:0}
+.btn-main{border:0;border-radius:8px;background:var(--g);color:#fff;font:inherit;font-size:14px;font-weight:700;padding:10px 24px;cursor:pointer}
+.btn-main:hover{background:#1f5238}.btn-main:disabled{opacity:.6;cursor:wait}
+.btn-sub{border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--mu);font:inherit;font-size:13px;font-weight:600;padding:8px 16px;cursor:pointer}
+.btn-sub:hover{border-color:var(--g2);color:var(--g)}
+.btn-sub.big{font-size:14px;padding:10px 20px}
+.bottombar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;gap:16px;padding:12px 20px;background:#fff;border-top:1px solid var(--bd)}
+.bb-wc{font-size:14px;color:var(--mu)}.bb-wc b{color:var(--tx)}
+/* 結果画面 */
+details.card summary .tog-close{display:none}
+details.card[open] summary .tog-open{display:none}
+details.card[open] summary .tog-close{display:inline}
+.mini{margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.mini.green{color:var(--g)}.mini.mt{margin-top:12px}.mini.pad{padding:0 4px}
+.plain{margin:0;font-size:14px;line-height:1.7;white-space:pre-wrap}
+.essay-box{margin:0;white-space:pre-wrap;border:1px solid var(--bd);border-radius:8px;background:var(--bg);padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.9}
+.wcbox{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);padding:10px 16px;font-size:14px}
+.muted{color:var(--mu)}.ok{color:var(--g)}.ng{color:var(--rd)}
+.line{margin:0;font-size:14px}
+.good{border:1px solid var(--gl);background:rgba(216,243,220,.4);border-radius:8px;padding:12px 16px}
+.note{margin:0;font-size:12px;line-height:1.7;color:var(--mu)}
+.pt{padding-top:8px}
+#cards>*+*{margin-top:12px}
+/* エラーカード */
+.ec-head{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--bg)}
+.num{display:flex;width:28px;height:28px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:var(--g);color:#fff;font-size:12px;font-weight:700}
+.badge{display:inline-block;border-radius:99px;background:var(--gl);color:var(--g);padding:2px 8px;font-size:11px;font-weight:700}
+.sent{margin:4px 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.7;word-break:break-word}
+.ec-body{padding:12px 16px}
+.hint-row{display:flex;gap:8px}
+.hint-row+.hint-row{margin-top:12px}
+.hn{margin-top:2px;display:flex;width:22px;height:22px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:700}
+.hn.shown{background:var(--g);color:#fff}
+.hn.next{border:2px dashed var(--g2);background:var(--gl);color:var(--g);cursor:pointer}
+.hn.lock{background:var(--bd);color:var(--mu)}
+.hbody{min-width:0;flex:1}
+.hlabel{margin:0 0 2px;font-size:11px;font-weight:600;color:var(--mu)}
+.htext{margin:0;font-size:14px;line-height:1.7}
+.hterm{margin:6px 0 0;font-size:12px;font-weight:600;color:var(--g)}
+.hnext{border:0;background:none;padding:0;font:inherit;font-size:14px;font-weight:600;color:var(--g);cursor:pointer}
+.hnext:hover{text-decoration:underline}
+.hlock{margin:0;font-size:14px;font-style:italic;color:var(--mu)}
+.practice{margin-top:12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);padding:12px}
+.warn{margin:0 0 8px;display:flex;gap:8px;border-left:4px solid var(--g2);border-radius:6px;background:var(--gl);padding:8px 12px;font-size:14px;font-weight:700;color:var(--g)}
+.masked{margin:0 0 8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.7}
+.pinput{width:100%;border:1px solid var(--bd);border-radius:6px;background:#fff;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;outline:none}
+.pinput:focus{border-color:var(--g2)}
+.pres{margin:8px 0 0;font-size:14px;font-weight:700}
+.pres.good-c{color:var(--g)}.pres.bad-c{color:var(--rd)}
+.pbtns{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.btn-fill{border:0;border-radius:8px;background:var(--g);color:#fff;font:inherit;font-size:14px;font-weight:600;padding:8px 16px;cursor:pointer}
+.btn-fill:disabled{opacity:.4;cursor:not-allowed}
+.answer{margin-top:12px;border:1px solid var(--gl);border-radius:6px;background:rgba(216,243,220,.4);padding:10px 12px}
+.answer p{margin:0;font-size:14px}
+.answer .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.7}
+/* 辞書 */
+.dict-head{display:flex;width:100%;align-items:center;gap:12px;padding:12px 16px;border:0;background:#fff;text-align:left;font:inherit;cursor:pointer;color:var(--tx)}
+.dict-head:hover{background:var(--bg)}
+.dict-head .arrow{margin-left:auto;font-size:12px;color:var(--mu)}
+.dict-body{display:grid;gap:16px;padding:16px;border-top:1px solid var(--bd)}
+@media(min-width:640px){.dict-body{grid-template-columns:1fr 1fr}}
+.dict-row{display:flex;gap:8px}
+.dict-row input,.dict-row select{border:1px solid var(--bd);border-radius:6px;background:var(--bg);padding:7px 12px;font:inherit;font-size:14px;color:var(--tx);outline:none;min-width:0}
+.dict-row input{flex:1}.dict-row select{padding:7px 8px}
+.dict-row input:focus{border-color:var(--g2)}
+.dict-row button{border:0;border-radius:6px;background:var(--g);color:#fff;font:inherit;font-size:14px;font-weight:700;padding:7px 12px;cursor:pointer;white-space:nowrap}
+.dict-res{margin-top:8px;min-height:72px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);padding:12px;font-size:14px;line-height:1.7}
+.dict-res ul{margin:0;padding:0;list-style:none}
+.dict-res li+li{margin-top:4px}
+.dict-res .w{font-weight:700;color:var(--g)}
+.dict-res .p{margin-left:4px;font-size:11px;font-style:italic;color:var(--mu)}
+.dict-res .d{margin-left:8px;color:var(--mu)}
+.dict-res .empty{margin:0;font-style:italic;color:var(--mu)}
+.dict-hint{margin:6px 0 0;font-size:12px;color:var(--mu)}

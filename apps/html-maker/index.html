@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>構文図解メーカー（デモ）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../../assets/css/demo.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+
+<header class="topbar">
+  <a class="back" href="../../index.html">← English Hub Demo</a>
+  <span class="sep">›</span>
+  <div class="brand">構文図解<span>メーカー</span></div>
+</header>
+
+<main class="page">
+  <!-- 画面1：例文入力 → AI下書き -->
+  <section id="screen-new">
+    <h1>教材を新規作成</h1>
+    <p class="muted">英文を入力して「AIで下書き」を押すと、文構造（樹形図・色分け・注釈）の下書きができます。</p>
+    <label class="lbl" for="src">英文（1行に1文）</label>
+    <textarea id="src" rows="5">The students who joined the club made a poster about local birds.
+Her quiet answer gave the class a new idea.
+Because it rained, we stayed inside and read.</textarea>
+    <div class="row">
+      <button class="btn primary" id="btn-ai">✨ AIで下書き</button>
+      <span id="ai-status" class="muted" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <!-- 画面2：エディタ -->
+  <section id="screen-edit" hidden>
+    <div class="row between">
+      <h1>構造エディタ</h1>
+      <div class="row">
+        <button class="btn" id="btn-back">← 入力へ</button>
+        <button class="btn primary" id="btn-export">📄 HTMLを書き出す</button>
+      </div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="layout">
+      <div class="canvas">
+        <h2>色分け文</h2>
+        <div id="colored" class="colored"></div>
+        <h2>樹形図</h2>
+        <div class="treewrap"><div id="tree"></div></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <aside class="inspector" id="inspector">
+        <h2>ノードを編集</h2>
+        <p class="muted" id="insp-empty">樹形図のノードをクリックすると、文言・役割・注釈を編集できます。</p>
+        <div id="insp-form" hidden>
+          <label class="lbl" for="f-text">文言</label>
+          <input id="f-text" type="text">
+          <label class="lbl" for="f-role">役割</label>
+          <select id="f-role"></select>
+          <label class="lbl" for="f-note">注釈（生徒向けの一言）</label>
+          <textarea id="f-note" rows="3"></textarea>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 画面3：書き出しプレビュー -->
+  <section id="screen-export" hidden>
+    <div class="row between">
+      <h1>書き出しプレビュー</h1>
+      <div class="row">
+        <button class="btn" id="btn-edit">← 編集に戻る</button>
+        <button class="btn primary" id="btn-dl">⬇ HTMLをダウンロード</button>
+      </div>
+    </div>
+    <p class="muted">自己完結HTML（CSS・データを1ファイルに内包）として配布できます。配布先ではインターネット接続なしで開けます。</p>
+    <div class="sheet" id="sheet"></div>
+  </section>
+</main>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

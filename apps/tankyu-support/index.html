@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>探究サポート（デモ）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/demo.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+
+  <header class="app-header">
+    <a href="../../index.html" class="site-logo"><span class="logo-mark" aria-hidden="true">🌿</span>← English Hub Demo</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-app">探究サポート</span>
+  </header>
+
+  <main class="wrap">
+    <!-- チャット画面 -->
+    <section id="chat-view">
+      <div class="top-row">
+        <h1 class="page-title">探究サポート</h1>
+        <button type="button" class="btn btn-ghost" id="reset-btn">最初からやり直す</button>
+      </div>
+      <div id="chat-log" class="chat-log" aria-live="polite"></div>
+      <form id="input-form" class="input-area" autocomplete="off">
+        <textarea id="input-text" rows="1" placeholder="ここに入力して送信" aria-label="メッセージ"></textarea>
+        <button type="submit" class="btn btn-primary">送信</button>
+      </form>
+      <p class="muted small demo-hint">デモでは選択肢から選んで進めます。</p>
+    </section>
+
+    <!-- 交差点まとめ画面 -->
+    <section id="inter-view" hidden>
+      <div class="inter-head">
+        <h1 class="page-title">交差点のまとめ</h1>
+        <p class="muted small">X軸・Y軸を整理し、問いのヒントを3つ示します。</p>
+      </div>
+      <div class="inter-body">
+        <section class="box box-x">
+          <h2>X軸（テーマの方向）</h2>
+          <p class="label">分野</p>
+          <p class="strong" id="x-genre"></p>
+          <p class="label">いま向き合っていること</p>
+          <p id="x-focus"></p>
+        </section>
+        <section class="box box-y">
+          <h2>Y軸（副次的レンズ）</h2>
+          <p class="strong" id="y-lens"></p>
+          <p class="small muted" id="y-desc"></p>
+        </section>
+        <section class="box box-q">
+          <h2>交差点の問い（例・3つ）</h2>
+          <ol id="q-list"></ol>
+        </section>
+        <section class="box box-close" id="closing"></section>
+        <div class="row btn-row">
+          <button type="button" class="btn btn-ghost" id="to-top">トップに戻る</button>
+          <button type="button" class="btn btn-soft" id="to-chat">チャットを続ける</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

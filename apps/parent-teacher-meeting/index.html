@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保護者懇談会 日程調整（デモ）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/demo.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+  <header class="appbar">
+    <div class="appbar-inner">
+      <div class="appbar-brand">
+        <a href="../../index.html" class="portal-link"><span class="portal-mark">🌿</span>← English Hub Demo</a>
+        <span class="portal-sep">›</span>
+        <div class="appbar-title">
+          <span class="appbar-school">○○高等学校（架空）</span>
+          <span class="appbar-main">保護者懇談会 日程調整</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="muted lead">保護者の希望は Google フォームで集め、回答はスプレッドシートに自動で転記されます。下の手順で、重複のない懇談会の時間割を作ります。</p>
+
+    <!-- 手順1 -->
+    <section class="card step">
+      <h2><span class="step-no">1</span>懇談会の情報を確認</h2>
+      <div class="info-grid">
+        <div class="stat"><div class="lbl">学級</div><div class="num sm">３年４組</div></div>
+        <div class="stat"><div class="lbl">日程</div><div class="num sm" id="i-days"></div></div>
+        <div class="stat"><div class="lbl">時間枠</div><div class="num sm" id="i-times"></div></div>
+        <div class="stat"><div class="lbl">総枠数</div><div class="num" id="i-total"></div></div>
+      </div>
+      <p class="muted small">1枠＝15分。フォームの「参加できる日時」の選択肢と同じ枠です。</p>
+    </section>
+
+    <!-- 手順2 -->
+    <section class="card step">
+      <div class="section-head">
+        <h2><span class="step-no">2</span>フォームの回答（スプレッドシート）を読み込む</h2>
+        <div class="head-actions">
+          <button type="button" class="btn btn-small btn-primary" id="t-load">サンプルを読み込む（フォーム回答・40名分）</button>
+        </div>
+      </div>
+      <p class="form-link"><a href="form.html">保護者に配るフォームの見本を見る（作り方つき）→</a></p>
+      <p class="muted small">Google フォームの回答シートを読み込みます。回答シートを開き「ファイル &gt; ダウンロード &gt; Microsoft Excel（.xlsx）」で保存したファイルを、下の枠に入れてください。</p>
+      <div class="dropzone" id="t-drop" tabindex="0" role="button" aria-label="回答スプレッドシートを選択">
+        <div class="dz-icon" aria-hidden="true">⇪</div>
+        <p class="dz-main">回答スプレッドシート（.xlsx / .csv）をここにドラッグ＆ドロップ</p>
+        <p class="dz-sub">または <span class="dz-pick">ファイルを選択</span></p>
+        <p class="dz-note">デモでは、どのファイルを入れても架空の回答40件が読み込まれます（ファイルの中身は読まず、どこにも送信しません）。</p>
+        <input type="file" id="t-file" accept=".xlsx,.csv" hidden>
+      </div>
+      <div id="t-stats" class="stats"></div>
+      <div class="table-wrap sheet-wrap"><table class="list-table sheet" id="t-sheet"></table></div>
+    </section>
+
+    <!-- 手順3 -->
+    <section class="card step">
+      <div class="section-head">
+        <h2><span class="step-no">3</span>自動で割り当てる</h2>
+        <div class="head-actions">
+          <button type="button" class="btn btn-primary" id="t-assign">自動で割り当てる</button>
+        </div>
+      </div>
+      <p class="muted small">1枠につき1家庭。各家庭が選んだ枠の中だけを使い、できるだけ多くの家庭が割り当たるよう最適化します（最大マッチング）。</p>
+      <div class="assign-summary" id="t-summary"></div>
+      <div class="grid-scroll"><table class="slot-grid result-grid" id="t-result"></table></div>
+      <div id="t-unassigned"></div>
+    </section>
+
+    <!-- 手順4 -->
+    <section class="card step">
+      <div class="section-head">
+        <h2><span class="step-no">4</span>結果の確認と出力</h2>
+        <div class="head-actions">
+          <button type="button" class="btn btn-ghost" id="t-export">Excel出力（CSV）</button>
+        </div>
+      </div>
+      <p class="muted small">本物のアプリは .xlsx を保存します。このデモでは同じ内容を CSV として保存し、下に表で確認できます。</p>
+      <div id="t-preview-wrap" hidden>
+        <div class="table-wrap"><table class="list-table" id="t-preview"></table></div>
+      </div>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+/* 構文図解メーカー モック：手書きCSS（本物は Tailwind 不使用のカスタムCSS風） */
+:root{--ink:#1f2328;--mute:#6b7280;--line:#d8dce2;--accent:#2f6f4f;--bg:#f6f7f5}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans JP",-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7}
+.topbar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.back{color:var(--accent);text-decoration:none;font-size:14px;font-weight:500}
+.sep{color:var(--mute)}
+.brand{font-weight:700;font-size:18px}.brand span{color:var(--accent)}
+.page{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:0 0 6px}h2{font-size:14px;margin:18px 0 8px;color:var(--mute)}
+.muted{color:var(--mute);font-size:14px;margin:0 0 12px}
+.lbl{display:block;font-size:13px;font-weight:500;margin:12px 0 4px}
+textarea,input,select{width:100%;font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.row.between{justify-content:space-between;margin-top:0}
+.btn{font:inherit;font-size:14px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.btn:hover{background:#f0f2ef}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{background:#25593f}
+.btn:disabled{opacity:.5;cursor:wait}
+.tabs{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap}
+.tab{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;cursor:pointer}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.layout{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start}
+.canvas,.inspector{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 16px 16px}
+.inspector h2{margin-top:10px}
+/* 色分け文 */
+.colored{font-size:19px;line-height:2.4}
+.chunk{padding:2px 6px;margin:0 2px;border-radius:4px;border-bottom:3px solid;cursor:pointer}
+.chunk.sel{outline:2px solid var(--ink)}
+.mk-solid{border-bottom-style:solid}.mk-double{border-bottom-style:double;border-bottom-width:5px}
+.mk-dashed{border-bottom-style:dashed}.mk-dotted{border-bottom-style:dotted}
+.mk-wavy{border-bottom-style:solid;text-decoration:underline wavy}
+.ja{font-size:13px;color:var(--mute);margin:0}
+/* 樹形図（ul/li の罫線で描画） */
+.treewrap{overflow-x:auto;padding:8px 0}
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree{display:flex;justify-content:center;min-width:max-content}
+.tree ul{display:flex;justify-content:center;padding-top:18px;position:relative}
+.tree li{position:relative;padding:18px 6px 0;text-align:center}
+.tree ul::before{content:"";position:absolute;top:0;left:50%;border-left:1.5px solid #9aa1ab;height:18px}
+.tree li::before,.tree li::after{content:"";position:absolute;top:0;right:50%;width:50%;height:18px;border-top:1.5px solid #9aa1ab}
+.tree li::after{right:auto;left:50%;border-left:1.5px solid #9aa1ab}
+.tree li:only-child::before,.tree li:only-child::after{display:none}
+.tree li:only-child{padding-top:0}
+.tree li:first-child::before,.tree li:last-child::after{border:0}
+.tree li:last-child::before{border-right:1.5px solid #9aa1ab;border-radius:0 6px 0 0}
+.tree li:first-child::after{border-radius:6px 0 0 0}
+.tree>li{padding-top:0}.tree>li::before,.tree>li::after{display:none}
+.node{display:inline-block;max-width:170px;padding:6px 10px;border-radius:8px;border:1.5px solid;font-size:14px;cursor:pointer;background:#fff}
+.node small{display:block;font-size:11px;opacity:.85}
+.node.sel{box-shadow:0 0 0 3px rgba(31,35,40,.35)}
+.node.root{background:#1f2328;color:#fff;border-color:#1f2328;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid}
+/* 書き出しプレビュー */
+.sheet{background:#fff;border:1px solid var(--line);border-radius:4px;padding:28px 32px;box-shadow:0 4px 14px rgba(0,0,0,.08);max-width:760px;margin:0 auto}
+.sheet h3{margin:0 0 4px;font-size:20px}
+.sheet .item{margin:18px 0 0;padding-top:14px;border-top:1px dashed var(--line)}
+.sheet .item .colored{font-size:18px;line-height:2.3}
+.notes{margin:4px 0 0;padding-left:20px;font-size:13px;color:#444}
+@media (max-width:760px){
+  .layout{grid-template-columns:1fr}
+  .colored{font-size:16px}
+  .sheet{padding:18px 14px}
+}

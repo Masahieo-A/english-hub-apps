@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英作文 文法添削（デモ）| English Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/demo.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+
+<header class="site-header">
+  <span class="logo-mark">🌿</span><span class="logo-text">English Hub</span>
+  <span class="sep">›</span>
+  <span class="page-name">英作文 文法添削</span>
+  <a class="back-link" href="../../index.html">← English Hub Demo</a>
+</header>
+
+<!-- ステップバー -->
+<div class="stepbar"><div class="stepbar-in">
+  <div class="step" id="step1"><span class="dot dot-active" id="dot1">1</span><span class="step-label active" id="lab1">① 入力</span></div>
+  <div class="step-line"></div>
+  <div class="step"><span class="dot dot-idle" id="dot2">2</span><span class="step-label" id="lab2">② 結果</span></div>
+</div></div>
+
+<!-- ===== 入力画面 ===== -->
+<main id="view-input" class="wrap">
+  <div class="about"><b>このアプリについて：</b>英作文を文法の観点からヒント形式でフィードバックします。AIは英文を書き直しません。ヒントをもとに、自分で修正しましょう。</div>
+
+  <section class="card">
+    <div class="card-head"><span class="ico">📋</span><div><p class="t">テーマ</p><p class="s">英作文のお題を入力してください（500字以内）</p></div></div>
+    <div class="card-body">
+      <textarea id="topic" class="field" rows="3"></textarea>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="ico">🔢</span><div><p class="t">必要語数</p><p class="s">単一数字（例：80）= 最低語数　範囲（例：80-100）= その範囲内</p></div></div>
+    <div class="card-body">
+      <input id="wc-req" class="field narrow" type="text" placeholder="80  または  80-100" value="50-70">
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><span class="ico">✍️</span><div><p class="t">英作文を書く</p><p class="s">フィードバック後、自分で修正してみましょう</p></div></div>
+    <div class="card-body">
+      <textarea id="essay" class="field mono" rows="9"></textarea>
+      <p class="wc-line">語数：<b id="wc-inline">0</b> words</p>
+      <p class="err" id="essay-err" role="alert"></p>
+      <button type="button" id="btn-sample" class="btn-sub">サンプル英作文に戻す</button>
+    </div>
+  </section>
+
+  <p class="demo-note">※ デモのため、どんな英文を入れても用意済みのサンプル評価が表示されます。</p>
+
+  <!-- 辞書（入力画面） -->
+  <div class="dict-slot" data-open="1"></div>
+</main>
+
+<!-- 画面下固定バー -->
+<div class="bottombar" id="bottombar">
+  <span class="bb-wc">語数：<b id="wc-bar">0</b> words</span>
+  <span class="grow"></span>
+  <button type="button" id="btn-submit" class="btn-main">AIフィードバックを取得 →</button>
+</div>
+
+<!-- ===== 結果画面 ===== -->
+<main id="view-result" class="wrap" hidden>
+  <details class="card" open>
+    <summary class="card-head clickable">
+      <span class="ico">📄</span>
+      <div class="grow"><p class="t">提出した英作文</p><p class="s">テーマと英文を確認する</p></div>
+      <span class="s tog-open">▼ 開く</span><span class="s tog-close">▲ 閉じる</span>
+    </summary>
+    <div class="card-body">
+      <p class="mini">テーマ</p>
+      <p class="plain" id="r-topic"></p>
+      <p class="mini mt">英作文</p>
+      <p class="essay-box" id="r-essay"></p>
+    </div>
+  </details>
+
+  <section class="card">
+    <div class="card-head hl"><span class="ico">📊</span><div><p class="t">結果サマリー</p></div></div>
+    <div class="card-body">
+      <div class="wcbox"><span class="muted">語数の条件：</span><b class="ok" id="r-sat"></b><span class="muted" id="r-wc"></span></div>
+      <p class="line"><span class="muted">文法の修正候補：</span><b id="r-count"></b></p>
+      <div class="good"><p class="mini green">💚 良い点</p><p class="plain" id="r-good"></p></div>
+      <p class="note">※ このアプリは「文法の正しさ」のみを評価しています。内容・構成については評価対象外です。トピックへの回答内容は自分で確認してください。</p>
+    </div>
+  </section>
+
+  <p class="mini pad">ヒント一覧 — 自分で修正してみましょう</p>
+  <div id="cards"></div>
+
+  <div class="dict-slot" data-open="0"></div>
+
+  <div class="pt"><button type="button" id="btn-again" class="btn-sub big">← もう一度添削する</button></div>
+</main>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

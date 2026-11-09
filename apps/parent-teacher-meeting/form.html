@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保護者向けフォームの例（デモ）— 保護者懇談会 日程調整</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/demo.css">
+<link rel="stylesheet" href="form.css">
+</head>
+<body>
+<!--
+  保護者に配る Google フォームの「見本」（2026-11-08）。
+  - 中身は見られるが送信はできない（送信ボタンは案内を出すだけ。通信なし）。
+  - Google フォームの画面そのものの再現ではなく、作るフォームの構成（質問と回答のしかた）を伝える見本。
+    他社のロゴ・名称入りの見た目は使わない。
+  - 日付と時刻は data.js の DAYS / TIMES と同じ（割り当て画面のサンプルと一致させる）。
+-->
+<div class="demo-ribbon"><b>DEMO</b>表示内容はすべて架空のサンプルです</div>
+
+<div class="page">
+  <p class="back"><a href="index.html">← 日程調整（教員画面）に戻る</a></p>
+
+  <div class="layout">
+    <main class="form" aria-label="保護者向けフォームの見本">
+      <section class="q head-card">
+        <h1>3年4組 保護者懇談会 日程希望調査</h1>
+        <p>保護者懇談会の日程を調整します。ご都合のよい時間帯を<strong>すべて</strong>選んでください。選んでいただいた中から、重ならないように担任が割り当て、後日お知らせします。</p>
+        <p class="meta">回答期限：11月20日（金）　懇談時間：1家庭15分</p>
+        <p class="req-note">* 必須の質問です</p>
+      </section>
+
+      <section class="q">
+        <label class="q-title" for="f-no">生徒の出席番号 <span class="req">*</span></label>
+        <input class="line" id="f-no" type="text" inputmode="numeric" placeholder="回答を入力">
+      </section>
+
+      <section class="q">
+        <label class="q-title" for="f-student">生徒の氏名 <span class="req">*</span></label>
+        <input class="line" id="f-student" type="text" placeholder="回答を入力">
+      </section>
+
+      <section class="q">
+        <label class="q-title" for="f-parent">保護者の氏名 <span class="req">*</span></label>
+        <input class="line" id="f-parent" type="text" placeholder="回答を入力">
+      </section>
+
+      <section class="q">
+        <p class="q-title">参加できる日時 <span class="req">*</span></p>
+        <p class="q-help">参加できるマスをすべて押してください（複数選択できます）。</p>
+        <div class="grid-scroll">
+          <table class="grid" id="f-grid"></table>
+        </div>
+        <p class="picked" id="f-picked">選択中：0 枠</p>
+      </section>
+
+      <section class="q">
+        <label class="q-title" for="f-note">備考（オンライン希望・きょうだいの懇談と続けたい など）</label>
+        <textarea class="line" id="f-note" rows="2" placeholder="回答を入力"></textarea>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="submit" id="f-submit">送信</button>
+        <button type="button" class="clear" id="f-clear">フォームをクリア</button>
+      </div>
+      <p class="demo-msg" id="f-msg" role="status" hidden>これはフォームの見本です。デモのため送信はできません（入力内容はどこにも送られません）。</p>
+    </main>
+
+    <aside class="howto" aria-label="このフォームの作り方">
+      <h2>このフォームの作り方</h2>
+      <p class="lead">Google フォームで、次のように作ります（約10分）。</p>
+      <ol>
+        <li><b>新しいフォームを作る</b><br>Google ドライブで「新規 &gt; Google フォーム」。タイトルと説明を入れる。</li>
+        <li><b>氏名などの質問</b><br>「出席番号」「生徒の氏名」「保護者の氏名」を<em>記述式</em>で追加し、必須をオン。</li>
+        <li><b>参加できる日時（ここが大事）</b><br>質問の種類を<em>チェックボックス（グリッド）</em>にする。
+          <ul>
+            <li>行：懇談の日付（例 12/14(月)）</li>
+            <li>列：時刻（例 15:00, 15:15, …）</li>
+          </ul>
+          「各行で回答を必須にする」は<em>オフ</em>（参加できない日があるため）。</li>
+        <li><b>備考</b><br><em>段落</em>で追加（任意）。</li>
+        <li><b>回答をスプレッドシートに</b><br>「回答」タブ &gt;「スプレッドシートにリンク」。回答が自動で表にたまります。</li>
+        <li><b>保護者に配る</b><br>「送信」からリンクをコピーして、学校の連絡手段で配信。</li>
+        <li><b>締め切ったら</b><br>回答のスプレッドシートを .xlsx でダウンロードし、日程調整の手順2で読み込む。</li>
+      </ol>
+      <p class="tip">チェックボックス（グリッド）の回答は、スプレッドシートでは<b>日付ごとの列</b>（例「参加できる日時 [12/14(月)]」に「15:00, 16:30」）として入ります。日程調整アプリはこの形をそのまま読み込めます。</p>
+    </aside>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="form.js"></script>
+</body>
+</html>
